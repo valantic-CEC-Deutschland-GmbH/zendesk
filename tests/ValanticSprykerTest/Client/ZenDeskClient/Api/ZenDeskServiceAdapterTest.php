@@ -1,18 +1,19 @@
 <?php
+declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\Api;
-
+namespace PyzTest\Client\ZenDesk\Api;
 
 use ArrayObject;
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 use Generated\Shared\Transfer\SendCatalogViaPostTransfer;
 use Generated\Shared\Transfer\StoryblokCatalogTransfer;
-use ValanticSpryker\Client\ZenDesk\Api\Mapper\ParamsMapper;
-use ValanticSpryker\Client\ZenDesk\Api\ZenDeskApi;
-use ValanticSpryker\Client\ZenDesk\Api\ZenDeskServiceAdapter;
-use ValanticSpryker\Client\ZenDesk\ZenDeskConfig;
-use ValanticSpryker\Shared\ZenDesk\ZenDeskConstants;
-use ValanticSpryker\Client\ZenDesk\ZenDeskTester;
+use PyzTest\Client\ZenDesk\ZenDeskTester;
+use Spryker\Client\GlossaryStorage\GlossaryStorageClient;
+use Spryker\Client\Locale\LocaleClient;
+use ValanticSpryker\Client\ZenDeskClient\Api\Mapper\ParamsMapper;
+use ValanticSpryker\Client\ZenDeskClient\Api\ZenDeskApi;
+use ValanticSpryker\Client\ZenDeskClient\Api\ZenDeskServiceAdapter;
+use ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig;
 
 /**
  * Auto-generated group annotations
@@ -24,7 +25,7 @@ use ValanticSpryker\Client\ZenDesk\ZenDeskTester;
  * @group ZenDeskServiceAdapterTest
  * Add your own group annotations below this line
  */
-class ZenDeskServiceAdapterTest extends Test
+class ZenDeskServiceAdapterTest extends Unit
 {
     protected ZenDeskTester $tester;
 
@@ -33,7 +34,9 @@ class ZenDeskServiceAdapterTest extends Test
      */
     public function testShould(): void
     {
-        $this->tester->setConfig(ZenDeskConstants::ZENDESK_IS_TEST_MODE, false);
+        //$this->tester->setConfig(ZenDeskConstants::ZENDESK_IS_TEST_MODE, false);
+
+        //$this->setConfig('ZENDESK_CONSTANTS:IS_TEST_MODE', false);
 
         $mock = $this->getMockBuilder(ZenDeskApi::class)->disableOriginalConstructor()->getMock();
         $mock
@@ -64,10 +67,10 @@ class ZenDeskServiceAdapterTest extends Test
                                     'id' => 6799503809938,
                                     'value' => 'Rob Brady',
                                 ],
-                                [
+                                /*[
                                     'id' => 6799497457810,
                                     'value' => 'Acme GMBH',
-                                ],
+                                ],*/
                                 [
                                     'id' => 7824716849554,
                                     'value' => '',
@@ -114,15 +117,36 @@ class ZenDeskServiceAdapterTest extends Test
             ->willReturn(true);
 
         $config = new ZenDeskConfig();
+        $configMock = $this->getMockBuilder(ZenDeskConfig::class)->getMock();
+        $configMock->method('getZenDeskSendAddressRequestSubject')->willReturn('wibu_online_2022_test');
+        $configMock->method('getZendeskMultipleTicketsApiUrl')->willReturn('https://wibu-gruppe.zendesk.com/api/v2/tickets/create_many');
+        $configMock->method('getZendeskSendCatalogsRequestSubject')->willReturn('Neue Katalogbestellung per Post');
+
+        $glossaryStorageClientMock = $this->getMockBuilder(GlossaryStorageClient::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $localeClientMock = $this->getMockBuilder(LocaleClient::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $paramsMapper = new ParamsMapper(
+            $configMock,
+            $glossaryStorageClientMock,
+            $localeClientMock
+        );
+
+
 
         $adapter = new ZenDeskServiceAdapter(
             $mock,
-            new ParamsMapper(
+            $paramsMapper,
+            /*new ParamsMapper(
                 $config,
                 $this->tester->getLocator()->glossaryStorage()->client(),
                 $this->tester->getLocator()->locale()->client(),
-            ),
-            $config,
+            ),*/
+            $configMock,
         );
 
         $sendCatalogViaPostTransfer = new SendCatalogViaPostTransfer();
@@ -146,5 +170,3 @@ class ZenDeskServiceAdapterTest extends Test
         $adapter->sendCatalogs($sendCatalogViaPostTransfer);
     }
 }
-
-

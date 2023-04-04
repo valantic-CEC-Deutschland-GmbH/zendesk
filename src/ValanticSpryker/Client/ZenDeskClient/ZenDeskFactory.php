@@ -1,24 +1,25 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\ZendeskClient;
+namespace ValanticSpryker\Client\ZenDeskClient;
 
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
-use ValanticSpryker\Client\ZenDesk\Api\Mapper\ParamsMapper;
-use ValanticSpryker\Client\ZenDesk\Api\ZenDeskApi;
-use ValanticSpryker\Client\ZenDesk\Api\ZenDeskServiceAdapter;
 use Spryker\Client\GlossaryStorage\GlossaryStorageClientInterface;
 use Spryker\Client\Kernel\AbstractFactory;
 use Spryker\Client\Locale\LocaleClientInterface;
+use ValanticSpryker\Client\ZenDeskClient\Api\Mapper\ParamsMapper;
+use ValanticSpryker\Client\ZenDeskClient\Api\ZenDeskApi;
+use ValanticSpryker\Client\ZenDeskClient\Api\ZenDeskServiceAdapter;
 
 /**
- * @method \Pyz\Client\ZenDesk\ZenDeskConfig getConfig()
+ * @method \ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig getConfig()
  */
 class ZenDeskFactory extends AbstractFactory
 {
     /**
-     * @return \Pyz\Client\ZenDesk\Api\ZenDeskServiceAdapter
+     * @return \ValanticSpryker\Client\ZenDeskClient\Api\ZenDeskServiceAdapter
      */
     public function getZenDeskServiceAdapter(): ZenDeskServiceAdapter
     {
@@ -38,7 +39,7 @@ class ZenDeskFactory extends AbstractFactory
     }
 
     /**
-     * @return \Pyz\Client\ZenDesk\Api\ZenDeskApi
+     * @return \ValanticSpryker\Client\ZenDeskClient\Api\ZenDeskApi
      */
     public function createZenDeskApi(): ZenDeskApi
     {
@@ -50,7 +51,7 @@ class ZenDeskFactory extends AbstractFactory
     }
 
     /**
-     * @return \Pyz\Client\ZenDesk\Api\Mapper\ParamsMapper
+     * @return \ValanticSpryker\Client\ZenDeskClient\Api\Mapper\ParamsMapper
      */
     public function createParamsMapper(): ParamsMapper
     {
@@ -85,5 +86,3 @@ class ZenDeskFactory extends AbstractFactory
         return $this->getProvidedDependency(ZenDeskDependencyProvider::LOCALE_CLIENT);
     }
 }
-
-

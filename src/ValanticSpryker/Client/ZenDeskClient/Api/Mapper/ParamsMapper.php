@@ -1,13 +1,14 @@
 <?php
 
-namespace ValanticSpryker\Client\ZendeskClient\Api\Mapper;
+declare(strict_types = 1);
+
+namespace ValanticSpryker\Client\ZenDeskClient\Api\Mapper;
 
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\SendCatalogViaPostTransfer;
-use ValanticSpryker\Client\ZenDesk\ZenDeskConfig;
 use Spryker\Client\GlossaryStorage\GlossaryStorageClientInterface;
 use Spryker\Client\Locale\LocaleClientInterface;
-
+use ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig;
 
 class ParamsMapper
 {
@@ -35,11 +36,6 @@ class ParamsMapper
      * @var int
      */
     private const COMPANY_NAME_FIELD = 6799503809938;
-
-    /**
-     * @var int
-     */
-    private const COMPANY_NAME_2_FIELD = 6799497457810;
 
     /**
      * @var int
@@ -87,7 +83,7 @@ class ParamsMapper
     private const SHOP_FIELD = 360018817580;
 
     /**
-     * @var \Pyz\Client\ZenDesk\ZenDeskConfig
+     * @var \ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig
      */
     private ZenDeskConfig $config;
 
@@ -96,7 +92,7 @@ class ParamsMapper
     private LocaleClientInterface $localeClient;
 
     /**
-     * @param \Pyz\Client\ZenDesk\ZenDeskConfig $config
+     * @param \ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig $config
      * @param \Spryker\Client\GlossaryStorage\GlossaryStorageClientInterface $glossaryStorageClient
      * @param \Spryker\Client\Locale\LocaleClientInterface $localeClient
      */
@@ -144,11 +140,6 @@ class ParamsMapper
                             [
                                 'id' => self::COMPANY_NAME_FIELD,
                                 'value' => $addressTransfer->getCompany(),
-                            ],
-                            [
-
-                                'id' => self::COMPANY_NAME_2_FIELD,
-                                'value' => $addressTransfer->getCompany2(),
                             ],
                             [
                                 'id' => self::STREET_FIELD,
@@ -236,10 +227,6 @@ class ParamsMapper
                             'value' => $sendCatalogsViaPostTransfer->getName(),
                         ],
                         [
-                            'id' => self::COMPANY_NAME_2_FIELD,
-                            'value' => $sendCatalogsViaPostTransfer->getCompany(),
-                        ],
-                        [
                             'id' => self::POSITION_FIELD,
                             'value' => $sendCatalogsViaPostTransfer->getPosition() ?? '',
                         ],
@@ -307,4 +294,3 @@ class ParamsMapper
         return $catalogsHtmlStringPerCompany;
     }
 }
-

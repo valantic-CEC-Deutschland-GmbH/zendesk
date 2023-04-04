@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\ZendeskClient\Api;
-
+namespace ValanticSpryker\Client\ZenDeskClient\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Psr\Log\LoggerInterface;
-use Pyz\Client\ZenDesk\ZenDeskConfig;
+use ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig;
 
 class ZenDeskApi
 {
@@ -21,7 +21,7 @@ class ZenDeskApi
     /**
      * @param \GuzzleHttp\Client $guzzleClient
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Pyz\Client\ZenDesk\ZenDeskConfig $config
+     * @param \ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig $config
      */
     public function __construct(
         Client $guzzleClient,
@@ -93,5 +93,3 @@ class ZenDeskApi
         return true;
     }
 }
-
-

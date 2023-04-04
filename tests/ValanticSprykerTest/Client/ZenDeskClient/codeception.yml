@@ -1,0 +1,15 @@
+namespace: ValanticSprykerTest\Client\ZenDeskClient
+
+extends: '../../codeception.base.yml'
+
+suites:
+    Client:
+        path: .
+        class_name: ZenDeskClientTester
+        modules:
+            enabled:
+                - Asserts
+                - \PyzTest\Shared\Testify\Helper\Environment
+                - \SprykerTest\Client\Testify\Helper\ConfigHelper
+                - \SprykerTest\Shared\Testify\Helper\LocatorHelper:
+                      projectNamespaces: ['Pyz','ValanticSpryker']

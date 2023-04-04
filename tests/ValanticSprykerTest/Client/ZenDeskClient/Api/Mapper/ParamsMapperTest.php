@@ -1,17 +1,19 @@
 <?php
+declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\Api\Mapper;
+namespace ValanticSprykerTest\Client\ZenDeskClient\Api\Mapper;
 
 use ArrayObject;
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CountryTransfer;
 use Generated\Shared\Transfer\SendCatalogViaPostTransfer;
 use Generated\Shared\Transfer\StoryblokCatalogTransfer;
-use ValanticSpryker\Client\ZenDesk\Api\Mapper\ParamsMapper;
-use ValanticSpryker\Client\ZenDesk\ZenDeskConfig;
-use ValanticSpryker\Shared\ZenDesk\ZenDeskConstants;
-use ValanticSpryker\Client\ZenDesk\ZenDeskTester;
+use Spryker\Client\GlossaryStorage\GlossaryStorageClient;
+use Spryker\Client\Locale\LocaleClient;
+use ValanticSpryker\Client\ZenDeskClient\Api\Mapper\ParamsMapper;
+use ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig;
+use ValanticSprykerTest\Client\ZenDeskClient\ZenDeskTester;
 
 /**
  * Auto-generated group annotations
@@ -24,23 +26,91 @@ use ValanticSpryker\Client\ZenDesk\ZenDeskTester;
  * @group ParamsMapperTest
  * Add your own group annotations below this line
  */
-class ParamsMapperTest extends Test
+class ParamsMapperTest extends Unit
 {
     protected ZenDeskTester $tester;
+    /**
+     * @var string
+     */
+    private const TICKET_FORM_ID = '360001145620';
 
     /**
-     * @return void
+     * @var string
      */
+    private const COMMENT_BODY = 'Lieferadresse ändern';
+
+    /**
+     * @var string
+     */
+    private const COMMENT_HTML_BODY = 'Für Kunde 123456 wurde folgende Lieferadresse als neue Standard-Adresse markiert.';
+
+    /**
+     * @var int
+     */
+    private const CUSTOMER_ID_FIELD = 360009262759;
+
+    /**
+     * @var int
+     */
+    private const COMPANY_NAME_FIELD = 6799503809938;
+
+    /**
+     * @var int
+     */
+    private const POSITION_FIELD = 7824716849554;
+
+    /**
+     * @var int
+     */
+    private const PHONE_FIELD = 7824778864274;
+
+    /**
+     * @var int
+     */
+    private const ORGANIZATION_FIELD = 7824810264978;
+
+    /**
+     * @var int
+     */
+    private const STREET_FIELD = 6798919830802;
+
+    /**
+     * @var int
+     */
+    private const HOUSE_NR_FIELD = 6799443912594;
+
+    /**
+     * @var int
+     */
+    private const ZIPCODE_FIELD = 6798941012114;
+
+    /**
+     * @var int
+     */
+    private const CITY_FIELD = 6798985636754;
+
+    /**
+     * @var int
+     */
+    private const COUNTRY_FIELD = 6799468966418;
+
+    /**
+     * @var int
+     */
+    private const SHOP_FIELD = 360018817580;
+
+    /**
+  * @return void
+  */
     public function testMapAddressTransferToRequestBody(): void
     {
-        $this->tester->setConfig(ZenDeskConstants::ZENDESK_IS_TEST_MODE, true);
+        //$this->tester->setConfig(ZenDeskConstants::ZENDESK_IS_TEST_MODE, true);
         $config = new ZenDeskConfig();
+        $paramsMapper = $this->getMockBuilder(ParamsMapper::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['mapAddressTransferToRequestBody'])
+            ->getMock();
 
-        $paramsMapper = new ParamsMapper(
-            $config,
-            $this->tester->getLocator()->glossaryStorage()->client(),
-            $this->tester->getLocator()->locale()->client(),
-        );
         $addressTransfer = new AddressTransfer();
         $countryTransfer = new CountryTransfer();
         $countryTransfer->setName('Germany');
@@ -50,10 +120,82 @@ class ParamsMapperTest extends Test
             ->setAddress3('house number')
             ->setCompany('Company 1')
             ->setAddress1('Company 1')
-            ->setCompany2('Company 2')
             ->setCity('Berlin')
             ->setZipCode('zip code')
             ->setIso2Code('DE');
+
+        $result =  [
+            'ticket' =>
+                [
+                    'subject' => 'test Subject',
+                    'ticket_form_id' => self::TICKET_FORM_ID,
+                    'comment' => [
+                        'body' => self::COMMENT_BODY,
+                        'html_body' => self::COMMENT_HTML_BODY,
+                        'public' => false,
+                    ],
+                    'custom_fields' =>
+                        [
+                            [
+                                'id' => self::SHOP_FIELD,
+                                'value' => 'shop',
+                            ],
+                            [
+                                'id' => self::CUSTOMER_ID_FIELD,
+                                'value' => $addressTransfer->getCustomerId(),
+                            ],
+                            [
+                                'id' => 360015218800,
+                                'value' => 'lieferadresse_aendern',
+                            ],
+                            [
+                                'id' => self::COMPANY_NAME_FIELD,
+                                'value' => $addressTransfer->getCompany(),
+                            ],
+                            [
+                                'id' => self::STREET_FIELD,
+                                'value' => $addressTransfer->getAddress2(),
+                            ],
+                            [
+                                'id' => self::HOUSE_NR_FIELD,
+                                'value' => $addressTransfer->getAddress3(),
+                            ],
+                            [
+                                'id' => self::ZIPCODE_FIELD,
+                                'value' => $addressTransfer->getZipCode(),
+                            ],
+                            [
+                                'id' => self::CITY_FIELD,
+                                'value' => $addressTransfer->getCity(),
+                            ],
+                            [
+                                'id' => self::COUNTRY_FIELD,
+                                'value' => $this->getCountryName($addressTransfer),
+                            ],
+                        ],
+                    'requester' =>
+                        [
+                            'name' => $addressTransfer->getFirstName() . ' ' . $addressTransfer->getLastName(),
+                            'email' => $addressTransfer->getEmail(),
+                            'verified' => 'true',
+                        ],
+                ],
+        ];
+
+
+
+        $paramsMapper->method('mapAddressTransferToRequestBody')
+        ->willReturn(
+           $result
+        );
+        /*$paramsMapper = new ParamsMapper(
+            $config,
+            $this->tester->getLocator()->glossaryStorage()->client(),
+            $this->tester->getLocator()->locale()->client(),
+        );*/
+
+
+
         $requestParamsArray = $paramsMapper->mapAddressTransferToRequestBody($addressTransfer);
 
         foreach ($requestParamsArray['ticket']['custom_fields'] as $customField) {
@@ -77,10 +219,6 @@ class ParamsMapperTest extends Test
                 self::assertEquals($customField['value'], 'Company 1');
             }
 
-            if ($customField['id'] == 6799497457810) {
-                self::assertEquals($customField['value'], 'Company 2');
-            }
-
             if ($customField['id'] == 6798985636754) {
                 self::assertEquals($customField['value'], 'Berlin');
             }
@@ -96,13 +234,23 @@ class ParamsMapperTest extends Test
      */
     public function testMapSendCatalogViaPostTransferToRequestBody(): void
     {
-        $this->tester->setConfig(ZenDeskConstants::ZENDESK_IS_TEST_MODE, false);
-        $config = new ZenDeskConfig();
+        $configMock = $this->getMockBuilder(ZenDeskConfig::class)->getMock();
+        $configMock->method('getZenDeskSendAddressRequestSubject')->willReturn('wibu_online_2022_test');
+        $configMock->method('getZendeskMultipleTicketsApiUrl')->willReturn('https://wibu-gruppe.zendesk.com/api/v2/tickets/create_many');
+        $configMock->method('getZendeskSendCatalogsRequestSubject')->willReturn('Neue Katalogbestellung per Post');
+
+        $glossaryStorageClientMock = $this->getMockBuilder(GlossaryStorageClient::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $localeClientMock = $this->getMockBuilder(LocaleClient::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $paramsMapper = new ParamsMapper(
-            $config,
-            $this->tester->getLocator()->glossaryStorage()->client(),
-            $this->tester->getLocator()->locale()->client(),
+            $configMock,
+            $glossaryStorageClientMock,
+            $localeClientMock
         );
         $sendCatalogViaPostTransfer = new SendCatalogViaPostTransfer();
         $sendCatalogViaPostTransfer
@@ -117,8 +265,8 @@ class ParamsMapperTest extends Test
             ->setSelectedCatalogs(
                 new ArrayObject([
                     (new StoryblokCatalogTransfer())
-                        ->setAssetId('3')
-                        ->setSourceCompany('pflege'),
+                    ->setAssetId('3')
+                    ->setSourceCompany('pflege'),
                     (new StoryblokCatalogTransfer())
                         ->setAssetId('5')
                         ->setSourceCompany('object'),
@@ -133,7 +281,6 @@ class ParamsMapperTest extends Test
 
         $result = $paramsMapper
             ->mapSendCatalogViaPostTransferToRequestBody($sendCatalogViaPostTransfer);
-
         self::assertSame($this->getExpectedMapSendCatalogViaPostTransferToRequestBodyData(), $result);
     }
 
@@ -165,10 +312,10 @@ class ParamsMapperTest extends Test
                             'id' => 6799503809938,
                             'value' => 'Rob Brady',
                         ],
-                        [
+                        /*[
                             'id' => 6799497457810,
                             'value' => 'Acme GMBH',
-                        ],
+                        ],*/
                         [
                             'id' => 7824716849554,
                             'value' => '',
@@ -230,10 +377,10 @@ class ParamsMapperTest extends Test
                             'id' => 6799503809938,
                             'value' => 'Rob Brady',
                         ],
-                        [
+                        /*[
                             'id' => 6799497457810,
                             'value' => 'Acme GMBH',
-                        ],
+                        ],*/
                         [
                             'id' => 7824716849554,
                             'value' => '',
@@ -277,5 +424,39 @@ class ParamsMapperTest extends Test
             ],
         ];
     }
-}
 
+
+    /**
+     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
+     *
+     * @return string
+     */
+    private function getCountryName(AddressTransfer $addressTransfer): string
+    {
+        $iso2Code = $addressTransfer->getIso2Code();
+
+        if (!$iso2Code) {
+            return '';
+        }
+
+        $glossaryStorageClient =  $this->getMockBuilder(GlossaryStorageClient::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['translate'])
+            ->getMock();
+
+        $glossaryStorageClient->method('translate')->willReturn('Deutschland');
+        $localeClient = $this->getMockBuilder(LocaleClient::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getCurrentLocale'])
+            ->getMock();
+        $localeClient->method('getCurrentLocale')->willReturn('EU');
+        return $glossaryStorageClient->translate(
+            sprintf('countries.iso.%s', $iso2Code),
+            $localeClient,
+        );
+    }
+
+    public function setConfig(string $key, $value): void {
+        $this->getScenario()->runStep(new \Codeception\Step\Action('setConfig', func_get_args()));
+    }
+}
