@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\Shared;
+namespace ValanticSpryker\Shared\Zendesk;
 
 class ZenDeskConstants
 {

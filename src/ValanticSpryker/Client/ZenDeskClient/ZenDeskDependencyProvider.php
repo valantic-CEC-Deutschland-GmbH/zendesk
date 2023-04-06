@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\ZendeskClient;
+namespace ValanticSpryker\Client\ZenDeskClient;
 
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;

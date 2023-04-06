@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\ZendeskClient\Api;
+namespace ValanticSpryker\Client\ZenDeskClient\Api;
 
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\SendCatalogViaPostTransfer;
-use ValanticSpryker\Client\ZenDesk\Api\Mapper\ParamsMapper;
-use ValanticSpryker\Client\ZenDesk\ZenDeskConfig;
+use ValanticSpryker\Client\ZenDeskClient\Api\Mapper\ParamsMapper;
+use ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig;
 
 class ZenDeskServiceAdapter
 {
@@ -17,9 +18,9 @@ class ZenDeskServiceAdapter
     private ZenDeskConfig $config;
 
     /**
-     * @param \ValanticSpryker\Client\ZenDesk\Api\ZenDeskApi $zenDeskApi
-     * @param \ValanticSpryker\Client\ZenDesk\Api\Mapper\ParamsMapper $paramsMapper
-     * @param \ValanticSpryker\Client\ZenDesk\ZenDeskConfig $config
+     * @param \ValanticSpryker\Client\ZenDeskClient\Api\ZenDeskApi $zenDeskApi
+     * @param \ValanticSpryker\Client\ZenDeskClient\Api\Mapper\ParamsMapper $paramsMapper
+     * @param \ValanticSpryker\Client\ZenDeskClient\ZenDeskConfig $config
      */
     public function __construct(
         ZenDeskApi $zenDeskApi,
@@ -67,5 +68,3 @@ class ZenDeskServiceAdapter
         return $sendCatalogsViaPostTransfer;
     }
 }
-
-

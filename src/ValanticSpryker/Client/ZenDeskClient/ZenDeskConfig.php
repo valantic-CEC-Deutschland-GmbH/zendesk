@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\ZendeskClient;
+namespace ValanticSpryker\Client\ZenDeskClient;
 
-use Pyz\Shared\ZenDesk\ZenDeskConstants;
 use Spryker\Client\Kernel\AbstractBundleConfig;
+use ValanticSpryker\Shared\Zendesk\ZenDeskConstants;
 
 class ZenDeskConfig extends AbstractBundleConfig
 {

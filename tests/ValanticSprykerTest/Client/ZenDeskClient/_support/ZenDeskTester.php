@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace ValanticSpryker\Client\ZenDesk;
+namespace ValanticSprykerTest\Client\ZenDeskClient;
 
 use Codeception\Actor;
 
@@ -29,4 +29,3 @@ class ZenDeskTester extends Actor
      * Define custom actions here
      */
 }
-
