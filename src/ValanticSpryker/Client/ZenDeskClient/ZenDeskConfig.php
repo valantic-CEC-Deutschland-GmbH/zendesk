@@ -12,7 +12,7 @@ class ZenDeskConfig extends AbstractBundleConfig
     /**
      * @var string
      */
-    private const TEST_MODE_SUBJECT = 'wibu_online_2022_test';
+    private const TEST_MODE_SUBJECT = 'online_test';
 
     /**
      * @var string

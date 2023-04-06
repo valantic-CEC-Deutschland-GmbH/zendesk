@@ -104,7 +104,6 @@ class ParamsMapperTest extends Unit
   */
     public function testMapAddressTransferToRequestBody(): void
     {
-        //$this->tester->setConfig(ZenDeskConstants::ZENDESK_IS_TEST_MODE, true);
         $config = new ZenDeskConfig();
         $paramsMapper = $this->getMockBuilder(ParamsMapper::class)
             ->disableOriginalConstructor()
@@ -188,13 +187,6 @@ class ParamsMapperTest extends Unit
         ->willReturn(
            $result
         );
-        /*$paramsMapper = new ParamsMapper(
-            $config,
-            $this->tester->getLocator()->glossaryStorage()->client(),
-            $this->tester->getLocator()->locale()->client(),
-        );*/
-
-
 
         $requestParamsArray = $paramsMapper->mapAddressTransferToRequestBody($addressTransfer);
 
@@ -235,7 +227,7 @@ class ParamsMapperTest extends Unit
     public function testMapSendCatalogViaPostTransferToRequestBody(): void
     {
         $configMock = $this->getMockBuilder(ZenDeskConfig::class)->getMock();
-        $configMock->method('getZenDeskSendAddressRequestSubject')->willReturn('wibu_online_2022_test');
+        $configMock->method('getZenDeskSendAddressRequestSubject')->willReturn('online_test');
         $configMock->method('getZendeskMultipleTicketsApiUrl')->willReturn('https://wibu-gruppe.zendesk.com/api/v2/tickets/create_many');
         $configMock->method('getZendeskSendCatalogsRequestSubject')->willReturn('Neue Katalogbestellung per Post');
 
@@ -312,10 +304,6 @@ class ParamsMapperTest extends Unit
                             'id' => 6799503809938,
                             'value' => 'Rob Brady',
                         ],
-                        /*[
-                            'id' => 6799497457810,
-                            'value' => 'Acme GMBH',
-                        ],*/
                         [
                             'id' => 7824716849554,
                             'value' => '',
@@ -377,10 +365,6 @@ class ParamsMapperTest extends Unit
                             'id' => 6799503809938,
                             'value' => 'Rob Brady',
                         ],
-                        /*[
-                            'id' => 6799497457810,
-                            'value' => 'Acme GMBH',
-                        ],*/
                         [
                             'id' => 7824716849554,
                             'value' => '',
@@ -454,9 +438,5 @@ class ParamsMapperTest extends Unit
             sprintf('countries.iso.%s', $iso2Code),
             $localeClient,
         );
-    }
-
-    public function setConfig(string $key, $value): void {
-        $this->getScenario()->runStep(new \Codeception\Step\Action('setConfig', func_get_args()));
     }
 }

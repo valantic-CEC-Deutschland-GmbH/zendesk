@@ -34,16 +34,12 @@ class ZenDeskServiceAdapterTest extends Unit
      */
     public function testShould(): void
     {
-        //$this->tester->setConfig(ZenDeskConstants::ZENDESK_IS_TEST_MODE, false);
-
-        //$this->setConfig('ZENDESK_CONSTANTS:IS_TEST_MODE', false);
-
         $mock = $this->getMockBuilder(ZenDeskApi::class)->disableOriginalConstructor()->getMock();
         $mock
             ->expects(self::once())
             ->method('request')
             ->with(
-                'https://wibu-gruppe.zendesk.com/api/v2/tickets/create_many',
+                'https://yourprojecturl/api/v2/tickets/create_many',
                 [
                     'tickets' => [
                         [
@@ -67,10 +63,6 @@ class ZenDeskServiceAdapterTest extends Unit
                                     'id' => 6799503809938,
                                     'value' => 'Rob Brady',
                                 ],
-                                /*[
-                                    'id' => 6799497457810,
-                                    'value' => 'Acme GMBH',
-                                ],*/
                                 [
                                     'id' => 7824716849554,
                                     'value' => '',
@@ -116,10 +108,9 @@ class ZenDeskServiceAdapterTest extends Unit
             )
             ->willReturn(true);
 
-        $config = new ZenDeskConfig();
         $configMock = $this->getMockBuilder(ZenDeskConfig::class)->getMock();
-        $configMock->method('getZenDeskSendAddressRequestSubject')->willReturn('wibu_online_2022_test');
-        $configMock->method('getZendeskMultipleTicketsApiUrl')->willReturn('https://wibu-gruppe.zendesk.com/api/v2/tickets/create_many');
+        $configMock->method('getZenDeskSendAddressRequestSubject')->willReturn('online_test');
+        $configMock->method('getZendeskMultipleTicketsApiUrl')->willReturn('https://yourprojecturl/api/v2/tickets/create_many');
         $configMock->method('getZendeskSendCatalogsRequestSubject')->willReturn('Neue Katalogbestellung per Post');
 
         $glossaryStorageClientMock = $this->getMockBuilder(GlossaryStorageClient::class)
@@ -136,16 +127,9 @@ class ZenDeskServiceAdapterTest extends Unit
             $localeClientMock
         );
 
-
-
         $adapter = new ZenDeskServiceAdapter(
             $mock,
             $paramsMapper,
-            /*new ParamsMapper(
-                $config,
-                $this->tester->getLocator()->glossaryStorage()->client(),
-                $this->tester->getLocator()->locale()->client(),
-            ),*/
             $configMock,
         );
 
