@@ -23,9 +23,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "gitlab-domains": [
-            "gitlab.nxs360.com"
-        ],
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
