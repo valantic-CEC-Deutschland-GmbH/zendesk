@@ -1,5 +1,5 @@
 {
-    "name": "valantic-cec/zendesk",
+    "name": "valantic-spryker-eco/zendesk",
     "type": "library",
     "description": "Provides ZenDesk client.",
     "license": "proprietary",
