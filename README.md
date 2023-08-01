@@ -7,4 +7,4 @@
 
 ### Install package
 ```
-composer req valantic-cec/zendesk
+composer req valantic-spryker-eco/zendesk
